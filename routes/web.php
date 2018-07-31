@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => ['auth.custom']], function () {
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::post('/logout', 'Auth\AuthCustomController@logout')->name('logout');
+
 });
+
+Route::get('/login', 'Auth\AuthCustomController@index')->name('login');
+Route::post('/login-api', 'Auth\AuthCustomController@login')->name('login-api');
+
+
