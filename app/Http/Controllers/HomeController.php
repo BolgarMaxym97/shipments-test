@@ -18,7 +18,7 @@ class HomeController extends Controller
         $response = (new ApiHelper('shipment', [], 'GET'))->fetch();
         // TODO: this is creation new shipment (TEST)
 //        $responseSend = (new ApiHelper('shipment', ['id' => 211314, 'name' => 'test2'], 'POST'))->fetch();
-        dd($response);
+//        dd($response);
         return view('home');
     }
 }

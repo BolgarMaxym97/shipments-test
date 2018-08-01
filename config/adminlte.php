@@ -110,16 +110,9 @@ return [
     'menu' => [
         'MAIN NAVIGATION',
         [
-            'text' => 'Blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
-        ],
-        [
-            'text' => 'Pages',
-            'url' => 'admin/pages',
-            'icon' => 'file',
-            /* 'label'       => 4,
-             'label_color' => 'success',*/
+            'text' => 'Shipments',
+            'url' => '/shipments',
+            'icon' => 'truck',
         ],
     ],
 

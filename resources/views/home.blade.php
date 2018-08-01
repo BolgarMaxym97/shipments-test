@@ -7,5 +7,8 @@
 @stop
 
 @section('content')
-    <p>You are logged in!</p>
+    <div id="app">
+        <p>You are logged in!</p>
+        <example-component></example-component>
+    </div>
 @stop
