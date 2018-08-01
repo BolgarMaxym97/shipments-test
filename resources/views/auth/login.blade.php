@@ -15,7 +15,11 @@
             <p class="login-box-msg">{{ trans('adminlte::adminlte.login_message') }}</p>
             <form action="{{ url(route('login-api')) }}" method="post">
                 {!! csrf_field() !!}
-
+                @if(\Session::has('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{\Session::get('error')}}
+                    </div>
+                @endif
                 <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
                     <input type="email" name="email" class="form-control" value="{{ old('email') }}"
                            placeholder="{{ trans('adminlte::adminlte.email') }}">
