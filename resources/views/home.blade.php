@@ -2,13 +2,8 @@
 
 @section('title', 'AdminLTE')
 
-@section('content_header')
-    <h1>Dashboard</h1>
-@stop
-
 @section('content')
     <div id="app">
-        <p>You are logged in!</p>
-        <example-component></example-component>
+        <shipments :shipments="{{json_encode($shipments)}}"></shipments>
     </div>
 @stop

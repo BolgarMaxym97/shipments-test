@@ -14,11 +14,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $userToken =  \Session::get('auth_token');
         $response = (new ApiHelper('shipment', [], 'GET'))->fetch();
         // TODO: this is creation new shipment (TEST)
 //        $responseSend = (new ApiHelper('shipment', ['id' => 211314, 'name' => 'test2'], 'POST'))->fetch();
-//        dd($response);
-        return view('home');
+        return view('home', ['shipments' => isset($response->data) ? $response->data->shipments : []]);
     }
 }
