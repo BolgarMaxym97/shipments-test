@@ -19,6 +19,8 @@ Route::group(['middleware' => ['auth.custom']], function () {
     Route::get('/get-shipments', 'ShipmentController@getShipments')->name('get-shipments');
     Route::post('/send-shipment', 'ShipmentController@sendShipment')->name('send-shipment');
     Route::post('/remove-shipment', 'ShipmentController@removeShipment')->name('remove-shipment');
+    Route::post('/create-shipment', 'ShipmentController@createShipment')->name('create-shipment');
+    Route::post('/edit-shipment', 'ShipmentController@editShipment')->name('edit-shipment');
 
 });
 

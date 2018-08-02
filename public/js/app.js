@@ -47406,17 +47406,21 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(58)
+}
 var normalizeComponent = __webpack_require__(11)
 /* script */
 var __vue_script__ = __webpack_require__(44)
 /* template */
-var __vue_template__ = __webpack_require__(45)
+var __vue_template__ = __webpack_require__(60)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-7dafc832"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -47513,6 +47517,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -47527,7 +47562,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             SENDED_STATUSES: {
                 SENDED: 1,
                 NOT_SENDED: 0
-            }
+            },
+            newShipment: {
+                id: null,
+                name: null
+            },
+            editId: null
         };
     },
     mounted: function mounted() {
@@ -47536,9 +47576,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        sendClass: function sendClass(sended) {
-            return sended === 1 ? 'btn-success fa fa-check' : 'btn-danger fa fa-remove';
-        },
         update: function update() {
             var _this = this;
 
@@ -47549,28 +47586,82 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.preLoader = false;
             });
         },
-        remove: function remove(id, index) {
+        sendClass: function sendClass(sended) {
+            return sended === 1 ? 'btn-success fa fa-check' : 'btn-danger fa fa-remove';
+        },
+
+        create: function create() {
             var _this2 = this;
+
+            if (this.validate(this.newShipment)) {
+                this.preLoader = true;
+                axios.post('/create-shipment', this.newShipment).then(function (response) {
+                    var data = response.data;
+                    if (data.success) {
+                        _this2.shipments.push(data.shipment);
+                        _this2.newShipment.id = null;
+                        _this2.newShipment.name = null;
+                    }
+                    _this2.noty(response);
+                }).then(function () {
+                    _this2.preLoader = false;
+                });
+            } else {
+                this.noty({
+                    data: { success: false, message: 'Not valid data' }
+                });
+            }
+        },
+        edit: function edit(shipment) {
+            var _this3 = this;
+
+            if (this.validate(shipment)) {
+                this.preLoader = true;
+                axios.post('/edit-shipment', { shipment: shipment }).then(function (response) {
+                    if (response.data.success) {
+                        _this3.editId = null;
+                    }
+                    _this3.noty(response);
+                }).then(function () {
+                    _this3.preLoader = false;
+                });
+            } else {
+                this.noty({
+                    data: { success: false, message: 'Not valid data' }
+                });
+            }
+        },
+        remove: function remove(id, index) {
+            var _this4 = this;
 
             this.preLoader = true;
             axios.post('/remove-shipment', { id: id }).then(function (response) {
-                response.data.success && _this2.shipments.splice(index, 1);
-                _this2.noty(response);
+                response.data.success && _this4.shipments.splice(index, 1);
+                _this4.noty(response);
             }).then(function () {
-                _this2.preLoader = false;
+                _this4.preLoader = false;
             });
         },
+
+        validate: function validate(model) {
+            return Number.isInteger(+model.id) && +model.id > 0 && model.name !== null && model.name.length > 0;
+        },
+
         send: function send(id, index) {
-            var _this3 = this;
+            var _this5 = this;
 
             this.preLoader = true;
             axios.post('/send-shipment', { id: id }).then(function (response) {
-                response.data.success && Vue.set(_this3.shipments[index], 'is_send', _this3.SENDED_STATUSES.SENDED);
-                _this3.noty(response);
+                response.data.success && Vue.set(_this5.shipments[index], 'is_send', _this5.SENDED_STATUSES.SENDED);
+                _this5.noty(response);
             }).then(function () {
-                _this3.preLoader = false;
+                _this5.preLoader = false;
             });
         },
+        setEditableField: function setEditableField(id) {
+            this.editId = this.editId !== id ? id : null;
+        },
+
         noty: function noty(response) {
             Vue.notify({
                 group: 'foo',
@@ -47582,143 +47673,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "container" },
-    [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "box box-primary" }, [
-            _c(
-              "div",
-              { staticClass: "box-header " },
-              [
-                _c("h3", { staticClass: "box-title pull-left" }, [
-                  _vm._v("Shipments")
-                ]),
-                _vm._v(" "),
-                _c("preloader", { attrs: { display: _vm.preLoader } })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "box-body no-padding" }, [
-              _c("table", { staticClass: "table table-condensed" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.shipments, function(shipment, index) {
-                    return _c("tr", [
-                      _c("td", [_vm._v(_vm._s(shipment.name))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(shipment.created_at))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("span", {
-                          staticClass: "btn-xs",
-                          class: _vm.sendClass(shipment.is_send)
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("span", { staticClass: "btn-xs btn-primary" }, [
-                          _vm._v(_vm._s(shipment.items.length))
-                        ]),
-                        _vm._v(" "),
-                        _vm._m(1, true)
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary btn-xs",
-                            attrs: {
-                              disabled:
-                                shipment.is_send === _vm.SENDED_STATUSES.SENDED
-                            },
-                            on: {
-                              click: function($event) {
-                                _vm.send(shipment.id, index)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "fa fa-truck" })]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-danger btn-xs",
-                            on: {
-                              click: function($event) {
-                                _vm.remove(shipment.id, index)
-                              }
-                            }
-                          },
-                          [_c("span", { staticClass: "fa fa-trash" })]
-                        )
-                      ])
-                    ])
-                  })
-                )
-              ])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("notifications", { attrs: { group: "foo" } })
-    ],
-    1
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Created")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Is sended")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Items")]),
-        _vm._v(" "),
-        _c("th")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-success btn-xs" }, [
-      _c("span", { staticClass: "fa fa-arrow-down" })
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7dafc832", module.exports)
-  }
-}
-
-/***/ }),
+/* 45 */,
 /* 46 */
 /***/ (function(module, exports) {
 
@@ -48142,9 +48097,359 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 58 */,
-/* 59 */,
-/* 60 */,
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(59);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(56)("6d8d6a60", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7dafc832\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Shipments.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7dafc832\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Shipments.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(48)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.new-name input[data-v-7dafc832] {\n    width: 30%;\n}\n.fade-enter-active[data-v-7dafc832] {\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n.fade-leave-active[data-v-7dafc832] {\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n}\n.fade-enter[data-v-7dafc832], .fade-leave-to[data-v-7dafc832]\n    /* .slide-fade-leave-active до версии 2.1.8 */\n{\n    -webkit-transform: translateY(-10px);\n            transform: translateY(-10px);\n    opacity: 0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "row justify-content-center" },
+    [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "box box-primary" }, [
+          _c(
+            "div",
+            { staticClass: "box-header " },
+            [
+              _c("h3", { staticClass: "box-title pull-left" }, [
+                _vm._v("Shipments")
+              ]),
+              _vm._v(" "),
+              _c("preloader", { attrs: { display: _vm.preLoader } })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "box-body no-padding" }, [
+            _c("table", { staticClass: "table table-condensed" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                [
+                  _vm._l(_vm.shipments, function(shipment, index) {
+                    return _c("tr", [
+                      _c("td", [_vm._v(_vm._s(shipment.id))]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(shipment.name)
+                          ),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c(
+                            "transition",
+                            { attrs: { name: "fade", mode: "out-in" } },
+                            [
+                              shipment.id === _vm.editId
+                                ? _c("div", { staticClass: "new-name" }, [
+                                    _c("label", { attrs: { for: "" } }, [
+                                      _vm._v("New name: ")
+                                    ]),
+                                    _c("br"),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: shipment.name,
+                                          expression: "shipment.name"
+                                        }
+                                      ],
+                                      staticClass: "form-control pull-left",
+                                      attrs: {
+                                        type: "text",
+                                        placeholder: "New name"
+                                      },
+                                      domProps: { value: shipment.name },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            shipment,
+                                            "name",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-success btn-md",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.edit(shipment)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "fa fa-save"
+                                        })
+                                      ]
+                                    )
+                                  ])
+                                : _vm._e()
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(shipment.created_at))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("span", {
+                          staticClass: "btn-xs",
+                          class: _vm.sendClass(shipment.is_send)
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("span", { staticClass: "btn-xs btn-primary" }, [
+                          _vm._v(_vm._s(shipment.items.length))
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(1, true)
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-warning btn-xs",
+                            on: {
+                              click: function($event) {
+                                _vm.setEditableField(shipment.id)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "fa fa-pencil" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-xs",
+                            attrs: {
+                              disabled:
+                                shipment.is_send ===
+                                  _vm.SENDED_STATUSES.SENDED || _vm.preLoader
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.send(shipment.id, index)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "fa fa-truck" })]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger btn-xs",
+                            on: {
+                              click: function($event) {
+                                _vm.remove(shipment.id, index)
+                              }
+                            }
+                          },
+                          [_c("span", { staticClass: "fa fa-trash" })]
+                        )
+                      ])
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newShipment.id,
+                            expression: "newShipment.id"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "ID" },
+                        domProps: { value: _vm.newShipment.id },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.newShipment, "id", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newShipment.name,
+                            expression: "newShipment.name"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "Name" },
+                        domProps: { value: _vm.newShipment.name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.newShipment,
+                              "name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          attrs: { disabled: _vm.preLoader },
+                          on: {
+                            click: function($event) {
+                              _vm.create()
+                            }
+                          }
+                        },
+                        [
+                          _c("span", { staticClass: "fa fa-plus" }, [
+                            _vm._v(" Create")
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ],
+                2
+              )
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("notifications", { attrs: { group: "foo" } })
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("id")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Is sended")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Items")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "btn btn-success btn-xs" }, [
+      _c("span", { staticClass: "fa fa-arrow-down" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "box-header " }, [
+      _c("h3", { staticClass: "box-title pull-left" }, [
+        _vm._v("Create new shipment")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7dafc832", module.exports)
+  }
+}
+
+/***/ }),
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -48179,7 +48484,7 @@ exports = module.exports = __webpack_require__(48)(false);
 
 
 // module
-exports.push([module.i, "\nspan[data-v-a0e0efa2] {\n    margin-left: 10px;\n    -webkit-animation: spin-data-v-a0e0efa2 1s infinite linear;\n}\n@-webkit-keyframes spin-data-v-a0e0efa2 {\n0% {\n        -webkit-transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(360deg);\n}\n}\n", ""]);
+exports.push([module.i, "\nspan[data-v-a0e0efa2] {\n    -webkit-animation: spin-data-v-a0e0efa2 1s infinite linear;\n}\n@-webkit-keyframes spin-data-v-a0e0efa2 {\n0% {\n        -webkit-transform: rotate(0deg);\n}\n100% {\n        -webkit-transform: rotate(360deg);\n}\n}\n", ""]);
 
 // exports
 

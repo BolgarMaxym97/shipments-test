@@ -14,7 +14,6 @@
 
 <style scoped>
     span {
-        margin-left: 10px;
         -webkit-animation: spin 1s infinite linear;
     }
 

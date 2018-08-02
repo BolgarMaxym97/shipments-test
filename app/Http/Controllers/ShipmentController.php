@@ -25,6 +25,33 @@ class ShipmentController extends Controller
         return isset($response->data) ? $response->data->shipments : [];
     }
 
+    public function createShipment(Request $request)
+    {
+        $responseSend = (new ApiHelper('shipment', $request->post(), 'POST'))->fetch();
+        $success = isset($responseSend->data);
+        return response()
+            ->json([
+                'success' => $success,
+                'shipment' => $success ? $responseSend->data : [],
+                'message' => $success ? 'Successfully created' : $responseSend->message,
+            ]);
+    }
+
+    public function editShipment(Request $request)
+    {
+        $data = [
+            'id' => $request->shipment['id'],
+            'name' => $request->shipment['name'],
+        ];
+        $responseSend = (new ApiHelper('shipment/' . $data['id'], $data, 'PUT'))->fetch();
+        $success = isset($responseSend->data);
+        return response()
+            ->json([
+                'success' => $success,
+                'message' => $success ? 'Successfully renamed' : 'Server Error',
+            ]);
+    }
+
     public function removeShipment(Request $request)
     {
         $id = $request->id;
