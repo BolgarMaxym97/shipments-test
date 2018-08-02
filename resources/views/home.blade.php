@@ -4,6 +4,6 @@
 
 @section('content')
     <div id="app">
-        <shipments :shipments="{{json_encode($shipments)}}"></shipments>
+        <shipments></shipments>
     </div>
 @stop

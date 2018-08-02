@@ -12,8 +12,13 @@
 */
 
 Route::group(['middleware' => ['auth.custom']], function () {
-    Route::get('/', 'HomeController@index')->name('home');
     Route::post('/logout', 'Auth\AuthCustomController@logout')->name('logout');
+
+    //Shipments
+    Route::get('/', 'ShipmentController@index')->name('home');
+    Route::get('/get-shipments', 'ShipmentController@getShipments')->name('get-shipments');
+    Route::post('/send-shipment', 'ShipmentController@sendShipment')->name('send-shipment');
+    Route::post('/remove-shipment', 'ShipmentController@removeShipment')->name('remove-shipment');
 
 });
 

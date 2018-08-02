@@ -42,46 +42,36 @@ class ApiHelper
      */
     private function setSettings()
     {
-        if (mb_strtoupper($this->type) == 'POST') {
-            $this->post();
-        } else {
-            $this->get();
-        }
-    }
-
-    private function post()
-    {
         curl_setopt_array($this->client, array(
-            CURLOPT_URL => $this->url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30000,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($this->data),
+            CURLOPT_CUSTOMREQUEST => $this->type,
             CURLOPT_HTTPHEADER => array(
                 "accept: */*",
                 "accept-language: en-US,en;q=0.8",
                 "content-type: application/json",
             ),
+        ));
+        if (mb_strtoupper($this->type) == 'GET') {
+            $this->get();
+        } else {
+            $this->other();
+        }
+    }
+
+    private function other()
+    {
+        curl_setopt_array($this->client, array(
+            CURLOPT_URL => $this->url,
+            CURLOPT_POSTFIELDS => json_encode($this->data),
         ));
     }
 
     private function get()
     {
-        curl_setopt_array($this->client, array(
-            CURLOPT_URL => $this->url . '&' . http_build_query($this->data),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_TIMEOUT => 30000,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                "accept: */*",
-                "accept-language: en-US,en;q=0.8",
-                "content-type: application/json",
-            ),
-        ));
+        curl_setopt($this->client, CURLOPT_URL, $this->url . '&' . http_build_query($this->data));
     }
 }
