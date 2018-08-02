@@ -10,11 +10,11 @@
 ## INSTALLATION
 - composer install
 - composer update
+- Add .env file
 - php artisan vendor:publish --all
 - php artisan key:generate
 - npm i
 - npm run prod
-- Add .env file
 
 ## About Laravel
 
