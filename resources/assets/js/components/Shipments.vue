@@ -11,9 +11,10 @@
                     <table class="table table-condensed">
                         <thead>
                         <tr>
-                            <th>id</th>
+                            <th>#ID</th>
                             <th>Name</th>
                             <th>Created</th>
+                            <th>Updated</th>
                             <th>Is sended</th>
                             <th>Items</th>
                             <th></th>
@@ -29,21 +30,23 @@
                                         <label for="">New name: </label><br>
                                         <input v-model="shipment.name" type="text" class="form-control pull-left"
                                                placeholder="New name">
-                                        <button @click="edit(shipment)" class="btn btn-success btn-md">
+                                        <button :disabled="preLoader" @click="edit(shipment)"
+                                                class="btn btn-success btn-md">
                                             <span class="fa fa-save"></span>
                                         </button>
                                     </div>
                                 </transition>
                             </td>
-                            <td>{{shipment.created_at}}</td>
+                            <td>{{shipment.created_at | moment("add", "3 hours") | moment("from", "now")}}</td>
+                            <td>{{shipment.updated_at | moment("add", "3 hours") | moment("from", "now")}}</td>
                             <td>
                                     <span class="btn-xs"
                                           :class="sendClass(shipment.is_send)"></span>
                             </td>
                             <td>
                                 <span class="btn-xs btn-primary">{{shipment.items.length}}</span>
-                                <button class="btn btn-success btn-xs">
-                                    <span class="fa fa-arrow-down"></span>
+                                <button @click="view(shipment)" class="btn btn-success btn-xs">
+                                    <span class="fa fa-eye"></span>
                                 </button>
                             </td>
                             <td>
@@ -54,7 +57,7 @@
                                         :disabled="shipment.is_send === SENDED_STATUSES.SENDED || preLoader"
                                         class="btn btn-primary btn-xs">
                                     <span class="fa fa-truck"></span></button>
-                                <button class="btn btn-danger btn-xs"
+                                <button :disabled="preLoader" class="btn btn-danger btn-xs"
                                         @click="remove(shipment.id, index)">
                                     <span class="fa fa-trash"></span>
                                 </button>
@@ -82,17 +85,23 @@
                 <!-- /.box-body -->
             </div>
         </div>
-        <notifications group="foo"/>
+        <notifications group="shipments"/>
+        <modal name="shipment-items" :width="'70%'" :resizable="true" :adaptive="true" :height="'auto'"
+               :scrollable="true">
+            <items :shipment="viewedShipment" :noty="noty"></items>
+        </modal>
     </div>
 </template>
 
 <script>
     import preloader from './PreLoader.vue';
+    import items from './ShipmentItems.vue';
 
 
     export default {
         components: {
-            preloader
+            preloader,
+            items
         },
         data: function () {
             return {
@@ -107,14 +116,15 @@
                     name: null,
                 },
                 editId: null,
+                viewedShipment: null,
             }
         },
         mounted() {
-            this.update();
+            this.fetch();
         },
 
         methods: {
-            update: function () {
+            fetch: function () {
                 this.preLoader = true;
                 axios.get('/get-shipments').then((response) => {
                     this.shipments = response.data;
@@ -142,9 +152,13 @@
                     });
                 } else {
                     this.noty({
-                        data: {success: false, message: 'Not valid data'}
+                        data: {success: false, message: 'Not valid data or ID already exist'}
                     });
                 }
+            },
+            view: function (shipment) {
+                this.viewedShipment = shipment;
+                this.$modal.show('shipment-items');
             },
             edit: function (shipment) {
                 if (this.validate(shipment)) {
@@ -159,7 +173,7 @@
                     });
                 } else {
                     this.noty({
-                        data: {success: false, message: 'Not valid data'}
+                        data: {success: false, message: 'Not valid data or ID already exist'}
                     });
                 }
             },
@@ -195,7 +209,7 @@
 
             noty: function (response) {
                 Vue.notify({
-                    group: 'foo',
+                    group: 'shipments',
                     type: response.data.success ? 'success' : 'error',
                     text: response.data.message
                 });

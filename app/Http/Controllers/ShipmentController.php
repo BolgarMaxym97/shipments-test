@@ -19,12 +19,19 @@ class ShipmentController extends Controller
         return view('home');
     }
 
+    /**
+     * @return array
+     */
     public function getShipments()
     {
         $response = (new ApiHelper('shipment', [], 'GET'))->fetch();
         return isset($response->data) ? $response->data->shipments : [];
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createShipment(Request $request)
     {
         $responseSend = (new ApiHelper('shipment', $request->post(), 'POST'))->fetch();
@@ -37,6 +44,10 @@ class ShipmentController extends Controller
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function editShipment(Request $request)
     {
         $data = [
@@ -52,6 +63,10 @@ class ShipmentController extends Controller
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function removeShipment(Request $request)
     {
         $id = $request->id;
@@ -64,6 +79,10 @@ class ShipmentController extends Controller
             ]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function sendShipment(Request $request)
     {
         $id = $request->id;

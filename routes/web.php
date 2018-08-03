@@ -22,6 +22,10 @@ Route::group(['middleware' => ['auth.custom']], function () {
     Route::post('/create-shipment', 'ShipmentController@createShipment')->name('create-shipment');
     Route::post('/edit-shipment', 'ShipmentController@editShipment')->name('edit-shipment');
 
+    // Shipment items
+    Route::post('/remove-item', 'ItemController@removeItem')->name('remove-item');
+    Route::post('/create-item', 'ItemController@createItem')->name('create-item');
+    Route::post('/edit-item', 'ItemController@editItem')->name('edit-item');
 });
 
 Route::get('/login', 'Auth\AuthCustomController@index')->name('login');

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="loader">
         <span v-if="display" class="fa fa-spinner"></span>
     </div>
 </template>
@@ -13,6 +13,9 @@
 </script>
 
 <style scoped>
+    .loader span {
+        margin-left: 10px;
+    }
     span {
         -webkit-animation: spin 1s infinite linear;
     }

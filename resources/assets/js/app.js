@@ -14,8 +14,12 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 import Notifications from 'vue-notification';
+import VModal from 'vue-js-modal';
+import MomentJs from 'vue-moment';
 
 Vue.use(Notifications);
+Vue.use(VModal);
+Vue.use(MomentJs);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('shipments', require('./components/Shipments.vue'));
