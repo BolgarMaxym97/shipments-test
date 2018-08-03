@@ -14,8 +14,6 @@ class ShipmentController extends Controller
      */
     public function index()
     {
-        // TODO: this is creation new shipment (TEST)
-//        $responseSend = (new ApiHelper('shipment', ['id' => 3333, 'name' => 'test3'], 'POST'))->fetch();
         return view('home');
     }
 
