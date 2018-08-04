@@ -21,7 +21,6 @@ Vue.use(Notifications);
 Vue.use(VModal);
 Vue.use(MomentJs);
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('shipments', require('./components/Shipments.vue'));
 
 const app = new Vue({
