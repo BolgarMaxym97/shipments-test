@@ -1,5 +1,7 @@
 <template>
     <div class="row justify-content-center">
+        <!-- This component is here because I don't use VueX and I don't want make one more response into counters component-->
+        <counters :shipments="shipments"></counters>
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header ">
@@ -96,12 +98,14 @@
 <script>
     import preloader from './PreLoader.vue';
     import items from './ShipmentItems.vue';
+    import counters from './Counters.vue';
 
 
     export default {
         components: {
             preloader,
-            items
+            items,
+            counters
         },
         data: function () {
             return {
