@@ -16,10 +16,13 @@ window.Vue = require('vue');
 import Notifications from 'vue-notification';
 import VModal from 'vue-js-modal';
 import MomentJs from 'vue-moment';
+import Tooltip from 'vue-directive-tooltip';
+import 'vue-directive-tooltip/css/index.css';
 
 Vue.use(Notifications);
 Vue.use(VModal);
 Vue.use(MomentJs);
+Vue.use(Tooltip);
 
 Vue.component('shipments', require('./components/Shipments.vue'));
 

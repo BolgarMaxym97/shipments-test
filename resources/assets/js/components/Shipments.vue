@@ -32,7 +32,7 @@
                                         <label for="">New name: </label><br>
                                         <input v-model="shipment.name" type="text" class="form-control pull-left"
                                                placeholder="New name">
-                                        <button :disabled="preLoader" @click="edit(shipment)"
+                                        <button v-tooltip.top="'Save changes'" :disabled="preLoader" @click="edit(shipment)"
                                                 class="btn btn-success btn-md">
                                             <span class="fa fa-save"></span>
                                         </button>
@@ -47,19 +47,19 @@
                             </td>
                             <td>
                                 <span class="btn-xs btn-primary">{{shipment.items.length}}</span>
-                                <button @click="view(shipment)" class="btn btn-success btn-xs">
+                                <button v-tooltip.top="'View items for this shipment'" @click="view(shipment)" class="btn btn-success btn-xs">
                                     <span class="fa fa-eye"></span>
                                 </button>
                             </td>
                             <td>
-                                <button @click="setEditableField(shipment.id)" class="btn btn-warning btn-xs">
+                                <button v-tooltip.top="'Edit shipment'" @click="setEditableField(shipment.id)" class="btn btn-warning btn-xs">
                                     <span class="fa fa-pencil"></span>
                                 </button>
-                                <button @click="send(shipment.id, index)"
+                                <button v-tooltip.top="'Send shipment to customer'" @click="send(shipment.id, index)"
                                         :disabled="shipment.is_send === SENDED_STATUSES.SENDED || preLoader"
                                         class="btn btn-primary btn-xs">
                                     <span class="fa fa-truck"></span></button>
-                                <button :disabled="preLoader" class="btn btn-danger btn-xs"
+                                <button v-tooltip.top="'Remove shipment'" :disabled="preLoader" class="btn btn-danger btn-xs"
                                         @click="remove(shipment.id, index)">
                                     <span class="fa fa-trash"></span>
                                 </button>
@@ -76,7 +76,7 @@
                                 <input v-model="newShipment.name" type="text" class="form-control" placeholder="Name">
                             </td>
                             <td>
-                                <button :disabled="preLoader" @click="create()" class="btn btn-success">
+                                <button v-tooltip.top="'Create new shipment'" :disabled="preLoader" @click="create()" class="btn btn-success">
                                     <span class="fa fa-plus"> Create</span>
                                 </button>
                             </td>
