@@ -12,6 +12,8 @@ class ApiHelper
     protected $type = '';
     protected $url;
 
+    const EXPIRED_TOKEN = 'token_expired';
+
     /**
      * ApiHelper constructor.
      * @param $endpoint
@@ -33,8 +35,11 @@ class ApiHelper
      */
     public function fetch()
     {
-        $response = curl_exec($this->client);
-        return json_decode($response);
+        $response = json_decode(curl_exec($this->client));
+        if (isset($response->error) && $response->error === self::EXPIRED_TOKEN) {
+            \Session::remove('auth_token');
+        }
+        return $response;
     }
 
     /**
