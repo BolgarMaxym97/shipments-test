@@ -17,6 +17,7 @@ import Notifications from 'vue-notification';
 import VModal from 'vue-js-modal';
 import MomentJs from 'vue-moment';
 import Tooltip from 'vue-directive-tooltip';
+import MixinsMethods from './mixinsMethods.js';
 import 'vue-directive-tooltip/css/index.css';
 
 Vue.use(Notifications);
@@ -25,6 +26,8 @@ Vue.use(MomentJs);
 Vue.use(Tooltip);
 
 Vue.component('shipments', require('./components/Shipments.vue'));
+
+Vue.mixin(MixinsMethods);
 
 const app = new Vue({
     el: '#app'

@@ -25320,8 +25320,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_directive_tooltip__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_directive_tooltip___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_directive_tooltip__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_directive_tooltip_css_index_css__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_directive_tooltip_css_index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_directive_tooltip_css_index_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixinsMethods_js__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_directive_tooltip_css_index_css__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_directive_tooltip_css_index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_directive_tooltip_css_index_css__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -25343,12 +25344,15 @@ window.Vue = __webpack_require__(14);
 
 
 
+
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_notification___default.a);
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_js_modal___default.a);
 Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_moment___default.a);
 Vue.use(__WEBPACK_IMPORTED_MODULE_3_vue_directive_tooltip___default.a);
 
 Vue.component('shipments', __webpack_require__(51));
+
+Vue.mixin(__WEBPACK_IMPORTED_MODULE_4__mixinsMethods_js__["a" /* default */]);
 
 var app = new Vue({
   el: '#app'
@@ -58220,6 +58224,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -58341,14 +58350,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         setEditableField: function setEditableField(id) {
             this.editId = this.editId !== id ? id : null;
-        },
-
-        noty: function noty(response) {
-            Vue.notify({
-                group: 'shipments',
-                type: response.data.success ? 'success' : 'error',
-                text: response.data.message
-            });
         }
     }
 });
@@ -58624,7 +58625,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: {
         preloader: __WEBPACK_IMPORTED_MODULE_0__PreLoader_vue___default.a
     },
-    props: ['shipment', 'noty'],
+    props: ['shipment'],
     data: function data() {
         return {
             preLoader: false,
@@ -59666,11 +59667,7 @@ var render = function() {
             scrollable: true
           }
         },
-        [
-          _c("items", {
-            attrs: { shipment: _vm.viewedShipment, noty: _vm.noty }
-          })
-        ],
+        [_c("items", { attrs: { shipment: _vm.viewedShipment } })],
         1
       )
     ],
@@ -59725,6 +59722,24 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 72 */,
+/* 73 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    methods: {
+        noty: function noty(response) {
+            Vue.notify({
+                group: 'shipments',
+                type: response.data.success ? 'success' : 'error',
+                text: response.data.message
+            });
+        }
+    }
+});
 
 /***/ })
 /******/ ]);

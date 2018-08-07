@@ -94,7 +94,6 @@
         },
         props: [
             'shipment',
-            'noty'
         ],
         data: function () {
             return {
