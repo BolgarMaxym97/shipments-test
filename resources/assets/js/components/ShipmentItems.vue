@@ -44,13 +44,15 @@
                                     </div>
                                 </transition>
                             </td>
-                            <td>{{item.created_at | moment("add", "3 hours") | moment("from", "now")}}</td>
-                            <td>{{item.updated_at | moment("add", "3 hours") | moment("from", "now")}}</td>
+                            <td>{{item.created_at | moment("timezone", "Europe/Kiev") | moment("from", "now")}}</td>
+                            <td>{{item.updated_at | moment("timezone", "Europe/Kiev") | moment("from", "now")}}</td>
                             <td>
-                                <button v-tooltip.top="'Edit item'" @click="setEditable(item.id)" class="btn btn-warning btn-xs">
+                                <button v-tooltip.top="'Edit item'" @click="setEditable(item.id)"
+                                        class="btn btn-warning btn-xs">
                                     <span class="fa fa-pencil"></span>
                                 </button>
-                                <button v-tooltip.top="'Remove item'" :disabled="preLoader" class="btn btn-danger btn-xs"
+                                <button v-tooltip.top="'Remove item'" :disabled="preLoader"
+                                        class="btn btn-danger btn-xs"
                                         @click="remove(item.id, index)">
                                     <span class="fa fa-trash"></span>
                                 </button>
@@ -70,7 +72,8 @@
                                 <input v-model="newItem.code" type="text" class="form-control" placeholder="Code">
                             </td>
                             <td>
-                                <button v-tooltip.top="'Create new item for shipment'" :disabled="preLoader" @click="create()" class="btn btn-success">
+                                <button v-tooltip.top="'Create new item for shipment'" :disabled="preLoader"
+                                        @click="create()" class="btn btn-success">
                                     <span class="fa fa-plus"> Create</span>
                                 </button>
                             </td>

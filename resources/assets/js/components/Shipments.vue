@@ -40,8 +40,8 @@
                                     </div>
                                 </transition>
                             </td>
-                            <td>{{shipment.created_at | moment("add", "3 hours") | moment("from", "now")}}</td>
-                            <td>{{shipment.updated_at | moment("add", "3 hours") | moment("from", "now")}}</td>
+                            <td>{{shipment.created_at | moment("timezone", "Europe/Kiev") | moment("from", "now")}}</td>
+                            <td>{{shipment.updated_at | moment("timezone", "Europe/Kiev") | moment("from", "now")}}</td>
                             <td>
                                     <span class="btn-xs"
                                           :class="sendClass(shipment.is_send)"></span>
